@@ -1,6 +1,6 @@
 # Ludic Slides
 
-Build fast presentations with Ludic.
+Create fast presentations with [Ludic](https://getludic.dev).
 
 ## Installation
 

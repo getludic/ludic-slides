@@ -1,15 +1,13 @@
-from ludic.catalog.headers import H1, H2
-from ludic.catalog.lists import Item, List
-from ludic.catalog.typography import Code, CodeBlock, Paragraph
 from ludic_slides import Slide, SlideMain, Slides
+from ludic_slides.components import Code, CodeBlock, Header, Item, List, Paragraph
 
 slides = Slides(
     SlideMain(
-        H1("The Ludic Framework"),
-        Paragraph("Web Development in Pure Python with Type-Guided Components.")
+        Header("The Ludic Framework"),
+        Paragraph("Web Development in Pure Python with Type-Guided Components."),
     ),
     Slide(
-        H2("Code Example"),
+        Header("Code Example"),
         CodeBlock(
             '''
             from ludic.catalog.layouts import Box
@@ -25,15 +23,15 @@ slides = Slides(
                     f"Welcome to {Link("Ludic", to="/")}!",
                 )
             ''',
-            language="python"
-        )
+            language="python",
+        ),
     ),
     Slide(
-        H2("Quick Start"),
+        Header("Quick Start"),
         Paragraph("Here are the commands you need to know:"),
         List(
             Item(Code("pip install ludic-slides")),
             Item(Code("ludic-slides slides.py")),
-        )
+        ),
     ),
 )

@@ -1,19 +1,81 @@
 from typing import override
 
 from ludic.attrs import Attrs, NoAttrs
-from ludic.catalog.headers import H1, H2
+from ludic.catalog.headers import H1 as Header
+from ludic.catalog.items import Key, Pairs, Value
 from ludic.catalog.layouts import Stack
+from ludic.catalog.lists import Item, List, NumberedList
+from ludic.catalog.messages import (
+    Message,
+    MessageDanger,
+    MessageInfo,
+    MessageSuccess,
+    MessageWarning,
+    Title,
+)
 from ludic.catalog.pages import Body, Head, HtmlPage
-from ludic.catalog.typography import Paragraph
+from ludic.catalog.quotes import Quote
+from ludic.catalog.tables import Table, TableHead, TableRow
+from ludic.catalog.typography import Code, CodeBlock, Link, Paragraph
 from ludic.components import Component, ComponentStrict
 from ludic.html import div, meta, script, style
 from ludic.styles import types
-from ludic.types import AnyChildren, JavaScript
+from ludic.types import JavaScript
 
 from .theme import SlidesTheme
 
+__all__ = (
+    "Header",
+    "Content",
+    "Link",
+    "List",
+    "NumberedList",
+    "Item",
+    "Code",
+    "CodeBlock",
+    "Paragraph",
+    "Slide",
+    "SlideMain",
+    "Slides",
+    "Key",
+    "Value",
+    "Pairs",
+    "Table",
+    "TableHead",
+    "TableRow",
+    "Title",
+    "Message",
+    "MessageDanger",
+    "MessageInfo",
+    "MessageSuccess",
+    "MessageWarning",
+    "Quote",
+)
 
-class Slide(ComponentStrict[H2, *tuple[AnyChildren, ...], NoAttrs]):
+type Content = (
+    Code
+    | CodeBlock
+    | Link
+    | List
+    | NumberedList
+    | Paragraph
+    | Key
+    | Value
+    | Pairs
+    | Table
+    | TableHead
+    | TableRow
+    | Title
+    | Message
+    | MessageDanger
+    | MessageInfo
+    | MessageSuccess
+    | MessageWarning
+    | Quote
+)
+
+
+class Slide(ComponentStrict[Header, *tuple[Content, ...], NoAttrs]):
     """A component used to create a slide in a presentation."""
 
     classes = ["slide"]
@@ -56,7 +118,7 @@ class Slide(ComponentStrict[H2, *tuple[AnyChildren, ...], NoAttrs]):
         )
 
 
-class SlideMain(ComponentStrict[H1, *tuple[Paragraph, ...], NoAttrs]):
+class SlideMain(ComponentStrict[Header, *tuple[Paragraph, ...], NoAttrs]):
     """A component used to create a main slide in a presentation."""
 
     classes = ["slide"]
