@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from ludic.styles.themes import Fonts, Header, Headers, Sizes, Theme
+from ludic.styles.themes import Borders, Fonts, Header, Headers, Sizes, Theme
 from ludic.styles.types import Size
 
 
@@ -10,13 +10,21 @@ class SlidesTheme(Theme):
 
     name: str = "slide"
 
+    measure: Size = Size(100, "%")
     aspect_ratio: tuple[int, int] = (4, 3)
-    fonts: Fonts = field(default_factory=lambda: Fonts(size=Size(2.5, "vmin")))
+    fonts: Fonts = field(default_factory=lambda: Fonts(size=Size(3, "vmin")))
     headers: Headers = field(
         default_factory=lambda: Headers(
-            h1=Header(size=Size(5.5, "vmin"), anchor=False),
-            h2=Header(size=Size(4.5, "vmin"), anchor=False),
-            h3=Header(size=Size(3.5, "vmin"), anchor=False),
+            h1=Header(size=Size(6, "vmin"), anchor=False),
+            h2=Header(size=Size(5, "vmin"), anchor=False),
+            h3=Header(size=Size(4, "vmin"), anchor=False),
+        )
+    )
+    borders: Borders = field(
+        default_factory=lambda: Borders(
+            thin=Size(0.05, "rem"),
+            normal=Size(0.1, "rem"),
+            thick=Size(0.2, "rem"),
         )
     )
     sizes: Sizes = field(

@@ -5,19 +5,19 @@ from typing import Any
 
 
 def locate_and_render_slides(
-    python_file_path: str,
+    python_input_file: str,
     slides_variable: str = "slides",
     output_file: str = "slides.html",
 ) -> None:
     """Locates a 'slides' variable within a Python file and renders it to HTML.
 
     Args:
-        python_file_path: The path to the Python file.
+        python_input_file: The path to the Python file.
         slides_variable: The name of the variable containing the slides object.
         output_file: The path to the output HTML file.
     """
-    if not os.path.isfile(python_file_path):
-        print(f"Error: File '{python_file_path}' not found.")
+    if not os.path.isfile(python_input_file):
+        print(f"Error: File '{python_input_file}' not found.")
         sys.exit(1)
 
     try:
@@ -25,16 +25,16 @@ def locate_and_render_slides(
         # the loaded module
         module_namespace: dict[str, Any] = {}
         # Execute file in a namespace
-        with open(python_file_path, encoding="utf-8") as f:
+        with open(python_input_file, encoding="utf-8") as f:
             exec(f.read(), {}, module_namespace)  # noqa
 
     except Exception as e:
-        print(f"Error loading file '{python_file_path}': {e}")
+        print(f"Error loading file '{python_input_file}': {e}")
         sys.exit(1)
 
     if slides_variable not in module_namespace:
         print(
-            f"Error: File '{python_file_path}' does not contain a variable "
+            f"Error: File '{python_input_file}' does not contain a variable "
             f"named '{slides_variable}'."
         )
         sys.exit(1)
@@ -43,7 +43,7 @@ def locate_and_render_slides(
 
     if not callable(getattr(slides_obj, "to_html", None)):
         print(
-            f"Error: Variable '{slides_variable}' within file '{python_file_path}' "
+            f"Error: Variable '{slides_variable}' within file '{python_input_file}' "
             f"does not have a 'to_html' method"
         )
         sys.exit(1)
@@ -52,7 +52,7 @@ def locate_and_render_slides(
     except Exception as e:
         print(
             f"Error calling 'to_html' on variable '{slides_variable}' within "
-            f"file '{python_file_path}': {e}"
+            f"file '{python_input_file}': {e}"
         )
         sys.exit(1)
     try:
@@ -72,18 +72,17 @@ def create_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(description="Render slides from a Python file.")
     parser.add_argument(
-        "file_path",
+        "input_file",
         help=(
-            "Python file path and optionally variable name separated by a colon "
-            "(e.g., my_slides.py:slides)"
+            "Python file path containing slides, optionally a variable name separated "
+            "by a colon (e.g., my_slides.py:slides)"
         ),
     )
     parser.add_argument(
         "-o",
-        "--output",
+        "--output-file",
         required=False,
-        help="Path to the output HTML file.",
-        default="slides.html",
+        help="Optionally specify name and path to the output file.",
     )
     return parser
 
@@ -101,18 +100,22 @@ def main(args: list[str] | None = None) -> None:
     args_parsed = parser.parse_args(args)
 
     try:
-        if ":" not in args_parsed.file_path:
-            python_file_path, slides_variable = args_parsed.file_path, "slides"
+        if ":" not in args_parsed.input_file:
+            python_input_file, slides_variable = args_parsed.input_file, "slides"
         else:
-            python_file_path, slides_variable = args_parsed.file_path.split(":", 1)
+            python_input_file, slides_variable = args_parsed.input_file.split(":", 1)
     except ValueError:
         print(
-            "Error: Invalid format for file_path. Use 'path/to/file.py' or "
+            "Error: Invalid format for input_file. Use 'path/to/file.py' or "
             "path/to/file.py:slides_var'."
         )
         sys.exit(1)
 
-    locate_and_render_slides(python_file_path, slides_variable, args_parsed.output)
+    locate_and_render_slides(
+        python_input_file,
+        slides_variable,
+        args_parsed.output_file or python_input_file.replace(".py", ".html"),
+    )
 
 
 if __name__ == "__main__":

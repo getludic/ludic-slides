@@ -1,6 +1,6 @@
 # Ludic Slides
 
-Create fast presentations with [Ludic](https://getludic.dev).
+Building presentations with [Ludic](https://getludic.dev) in Python.
 
 ## Installation
 
@@ -13,36 +13,30 @@ pip install ludic-slides
 Create a new file `slides.py` with the following content:
 
 ```python
-from ludic.catalog.headers import H1, H2
-from ludic.catalog.typography import Paragraph, Code
-from ludic.catalog.items import List, Item
 from ludic_slides import Slide, SlideMain, Slides
+from ludic_slides.components import Code, Header, Item, List, Paragraph
 
 slides = Slides(
     SlideMain(
-        H1("My Slides"),
-        Paragraph("Quickstart for Ludic Slides"),
+        Header("My Slides"),
+        Paragraph("A Quick Start for Ludic Slides"),
     ),
     Slide(
-        H2("Installation"),
+        Header("Installation"),
         List(
-            Item(Code("pip install ludic-slides")),
-            Item(Code("ludic-slides slides.py")),
+            Item(Code("$ pip install ludic-slides")),
+            Item(Code("$ ludic-slides slides.py")),
         )
     ),
 )
 ```
 
-## Generate HTML slides
+## Generate HTML Slides
+
+The following command generates `slides.html` file:
 
 ```
 ludic-slides slides.py
-```
-
-You can also specify the output path:
-
-```
-ludic-slides slides.py -o ~/Documents/my-slides.py
 ```
 
 If the variable's name in the `slides.py` file does not equal `slides`, you can also specify a different name:
@@ -50,3 +44,12 @@ If the variable's name in the `slides.py` file does not equal `slides`, you can 
 ```
 ludic-slides file-name.py:my_variable
 ```
+
+You can also specify the output path:
+
+```
+ludic-slides slides.py -o ~/Documents/my-slides.html
+```
+
+> [!NOTE]
+> Note that outputting to a different location means you will need to copy static files like images used in your presentation to the correct location manually.

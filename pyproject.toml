@@ -4,24 +4,25 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ludic-slides"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Build fast presentations with Ludic"
 keywords = ["html", "slides", "presentation"]
 authors = [{ name = "Pavel Dedík", email = "dedikx@gmail.com" }]
 maintainers = [{ name = "Pavel Dedík", email = "dedikx@gmail.com" }]
 requires-python = ">=3.12"
+license = "MIT"
 readme = "README.md"
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Framework :: AnyIO",
-    "Intended Audience :: Developers",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Education",
+    "Intended Audience :: Other Audience",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Multimedia :: Graphics :: Presentation",
 ]
 dependencies = [
     "ludic>=0.5.4",

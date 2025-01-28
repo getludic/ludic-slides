@@ -1,9 +1,9 @@
-from ludic.styles import themes
+from ludic.styles.themes import set_default_theme
 
 from .components import Slide, SlideMain, Slides
-from .theme import SlidesTheme
+from .themes import SlidesTheme
 
-themes.set_default_theme(SlidesTheme())
+set_default_theme(SlidesTheme())
 
 __all__ = (
     "Slide",

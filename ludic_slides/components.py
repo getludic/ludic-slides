@@ -1,6 +1,6 @@
 from typing import override
 
-from ludic.attrs import Attrs, NoAttrs
+from ludic.attrs import Attrs, GlobalAttrs, NoAttrs
 from ludic.catalog.headers import H1 as Header
 from ludic.catalog.items import Key, Pairs, Value
 from ludic.catalog.layouts import Stack
@@ -20,9 +20,9 @@ from ludic.catalog.typography import Code, CodeBlock, Link, Paragraph
 from ludic.components import Component, ComponentStrict
 from ludic.html import div, meta, script, style
 from ludic.styles import types
-from ludic.types import JavaScript
+from ludic.types import ComplexChildren, JavaScript
 
-from .theme import SlidesTheme
+from .themes import SlidesTheme
 
 __all__ = (
     "Header",
@@ -75,8 +75,8 @@ type Content = (
 )
 
 
-class Slide(ComponentStrict[Header, *tuple[Content, ...], NoAttrs]):
-    """A component used to create a slide in a presentation."""
+class BaseSlide(Component[ComplexChildren, GlobalAttrs]):
+    """An abstract component used as a base class for slide components."""
 
     classes = ["slide"]
     styles = style[SlidesTheme].use(
@@ -96,32 +96,56 @@ class Slide(ComponentStrict[Header, *tuple[Content, ...], NoAttrs]):
                 "box-shadow": (
                     f"0 {theme.sizes.xs} {theme.sizes.s} {theme.colors.light.darken(3)}"
                 ),
-                "font-size": theme.sizes.xxl,
+                "font-size": theme.fonts.size,
                 "padding-inline": theme.sizes.xxxl,
                 "padding-block": theme.sizes.xxl,
                 "margin": theme.sizes.xl,
                 "overflow": "hidden",
             },
-            ".slide-content h1": {
+            ".slide .stack > * + *": {
+                "inline-size": "auto",
+            },
+            ".slide h1": {
                 "text-align": "center",
+            },
+            (".slide .code-block", ".slide .code-block *", ".slide .code"): {
+                "font-size": theme.fonts.size * 0.85,
+            },
+            (".slide .code-block", ".slide .code"): {
+                "border": f"{theme.borders.thin} solid {theme.colors.light.darken(1)}",
+                "border-radius": theme.sizes.xxs,
+            },
+            ".slide ul > li::marker": {
+                "font-size": theme.fonts.size,
+            },
+            ".slide li": {
+                "padding-inline-start": theme.sizes.xs,
+            },
+            (".slide ol", ".slide ul"): {
+                "margin-inline-start": theme.sizes.s,
+            },
+            (".slide ol > li + li", ".slide ul > li + li"): {
+                "margin-block-start": theme.sizes.m,
             },
         }
     )
 
     @override
     def render(self) -> div:
-        return div(
-            div(
-                div(Stack(*self.children), classes=["slide-regular"]),
-                classes=["slide-content"],
-            )
-        )
+        return div(div(div(*self.children, **self.attrs), classes=["slide-content"]))
+
+
+class Slide(ComponentStrict[Header, *tuple[Content, ...], NoAttrs]):
+    """A component used to create a slide in a presentation."""
+
+    @override
+    def render(self) -> BaseSlide:
+        return BaseSlide(Stack(*self.children), classes=["slide-regular"])
 
 
 class SlideMain(ComponentStrict[Header, *tuple[Paragraph, ...], NoAttrs]):
     """A component used to create a main slide in a presentation."""
 
-    classes = ["slide"]
     styles = {
         ".slide-main": {
             "display": "flex",
@@ -132,13 +156,8 @@ class SlideMain(ComponentStrict[Header, *tuple[Paragraph, ...], NoAttrs]):
     }
 
     @override
-    def render(self) -> div:
-        return div(
-            div(
-                div(Stack(*self.children), classes=["slide-main"]),
-                classes=["slide-content"],
-            )
-        )
+    def render(self) -> BaseSlide:
+        return BaseSlide(Stack(*self.children), classes=["slide-main"])
 
 
 class SlidesAttrs(Attrs, total=False):
