@@ -1,5 +1,6 @@
 from typing import override
 
+from ludic import html
 from ludic.attrs import Attrs, GlobalAttrs, NoAttrs
 from ludic.catalog.headers import H1 as Header
 from ludic.catalog.items import Key, Pairs, Value
@@ -59,19 +60,28 @@ type Content = (
     | List
     | NumberedList
     | Paragraph
-    | Key
-    | Value
     | Pairs
     | Table
-    | TableHead
-    | TableRow
-    | Title
     | Message
     | MessageDanger
     | MessageInfo
     | MessageSuccess
     | MessageWarning
     | Quote
+    | html.a
+    | html.b
+    | html.s
+    | html.i
+    | html.strong
+    | html.table
+    | html.blockquote
+    | html.ul
+    | html.ol
+    | html.dl
+    | html.br
+    | html.code
+    | html.pre
+    | html.em
 )
 
 
