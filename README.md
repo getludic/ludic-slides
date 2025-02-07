@@ -2,6 +2,8 @@
 
 Building presentations with [Ludic](https://getludic.dev) in Python.
 
+![](./assets/example.png)
+
 ## Installation
 
 ```
