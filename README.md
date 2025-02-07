@@ -2,7 +2,7 @@
 
 Building presentations with [Ludic](https://getludic.dev) in Python.
 
-![](./assets/example.png)
+![](https://raw.githubusercontent.com/getludic/ludic-slides/refs/heads/main/assets/example.png)
 
 ## Installation
 
