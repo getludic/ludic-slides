@@ -16,12 +16,12 @@ Create a new file `slides.py` with the following content:
 
 ```python
 from ludic_slides import Slide, SlideMain, Slides
-from ludic_slides.components import Code, Header, Item, List, Paragraph
+from ludic_slides.components import Code, Header, Item, List, Paragraph, b
 
 slides = Slides(
     SlideMain(
         Header("My Slides"),
-        Paragraph("A Quick Start for Ludic Slides"),
+        Paragraph(f"A {b("Quick Start")} for Ludic Slides"),
     ),
     Slide(
         Header("Installation"),

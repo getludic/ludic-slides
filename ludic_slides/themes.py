@@ -6,7 +6,20 @@ from ludic.styles.types import Size
 
 @dataclass
 class SlidesTheme(Theme):
-    """Slide configuration."""
+    """Theme configuration for slide presentations.
+
+    Defines the visual styling and layout parameters for slides including
+    dimensions, fonts, headers, borders, and various size presets.
+
+    Attributes:
+        name: Theme identifier name
+        measure: Size specification for the slide width
+        aspect_ratio: Tuple defining slide dimensions (width, height)
+        fonts: Font configuration including base size
+        headers: Configuration for h1-h3 headers including size and anchor settings
+        borders: Border width definitions for thin, normal, and thick borders
+        sizes: Collection of predefined size values from xxxxs to xxxxl
+    """
 
     name: str = "slide"
 

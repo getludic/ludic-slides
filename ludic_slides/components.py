@@ -86,7 +86,18 @@ type Content = (
 
 
 class BaseSlide(Component[ComplexChildren, GlobalAttrs]):
-    """An abstract component used as a base class for slide components."""
+    """An abstract component used as a base class for slide components.
+
+    Provides core slide functionality including layout, styling, and positioning.
+    Implements common styles and structure shared by all slide types.
+
+    Attributes:
+        classes: CSS classes applied to the slide
+        styles: Theme-based styling rules for slide appearance
+
+    Methods:
+        render: Renders the slide structure with content wrapper
+    """
 
     classes = ["slide"]
     styles = style[SlidesTheme].use(
@@ -142,19 +153,54 @@ class BaseSlide(Component[ComplexChildren, GlobalAttrs]):
 
     @override
     def render(self) -> div:
+        """Render the slide component.
+
+        Returns:
+            div: HTML div element containing the slide content
+        """
         return div(div(div(*self.children, **self.attrs), classes=["slide-content"]))
 
 
 class Slide(ComponentStrict[Header, *tuple[Content, ...], NoAttrs]):
-    """A component used to create a slide in a presentation."""
+    """A component used to create a standard slide in a presentation.
+
+    Creates a slide with a header and arbitrary content elements. Enforces
+    strict typing for slide content.
+
+    Args:
+        Header: The slide's header component
+        *Content: Variable number of content elements (paragraphs, lists, etc.)
+
+    Methods:
+        render: Renders the slide with stacked content layout
+    """
 
     @override
     def render(self) -> BaseSlide:
+        """Render a standard slide.
+
+        Returns:
+            BaseSlide: Rendered slide with stacked content layout
+        """
         return BaseSlide(Stack(*self.children), classes=["slide-regular"])
 
 
 class SlideMain(ComponentStrict[Header, *tuple[Paragraph, ...], NoAttrs]):
-    """A component used to create a main slide in a presentation."""
+    """A component used to create a main/title slide in a presentation.
+
+    Creates a centered main slide typically used for section titles or
+    presentation starts. Only accepts paragraphs as content.
+
+    Args:
+        Header: The main slide's header component
+        *Paragraph: Variable number of paragraph components
+
+    Attributes:
+        styles: CSS styles for main slide centering and layout
+
+    Methods:
+        render: Renders the main slide with centered content
+    """
 
     styles = {
         ".slide-main": {
@@ -167,18 +213,38 @@ class SlideMain(ComponentStrict[Header, *tuple[Paragraph, ...], NoAttrs]):
 
     @override
     def render(self) -> BaseSlide:
+        """Render a main/title slide.
+
+        Returns:
+            BaseSlide: Rendered main slide with centered content
+        """
         return BaseSlide(Stack(*self.children), classes=["slide-main"])
 
 
 class SlidesAttrs(Attrs, total=False):
-    title: str
+    """Attributes for the Slides component.
+
+    Attributes:
+        title: The title of the slideshow, displayed in the browser title
+    """
 
 
 class Slides(Component[Slide | SlideMain, SlidesAttrs]):
-    """A component rendering as a slideshow.
+    """A component rendering as an interactive slideshow.
+
+    Creates a complete slideshow presentation with navigation controls and responsive
+    layout. Supports keyboard navigation and click interactions.
+
+    Args:
+        *children: Collection of Slide or SlideMain components
+        attrs: SlidesAttrs configuration including title
+
+    Attributes:
+        classes: CSS classes for the slideshow container
+        styles: Theme-based styling for the slideshow
+        javascript: Interactive navigation and control script
 
     Example usage:
-
         Slides(
             Slide(...),
             Slide(...),
@@ -264,6 +330,14 @@ class Slides(Component[Slide | SlideMain, SlidesAttrs]):
 
     @override
     def render(self) -> HtmlPage:
+        """Render the complete slideshow.
+
+        Generates a full HTML page with slideshow content, navigation
+        controls, and required metadata.
+
+        Returns:
+            HtmlPage: Complete HTML document with slideshow
+        """
         return HtmlPage(
             Head(
                 meta(charset="utf-8"),
