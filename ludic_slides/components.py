@@ -71,6 +71,7 @@ type Content = (
     | html.a
     | html.b
     | html.s
+    | html.u
     | html.i
     | html.strong
     | html.table
